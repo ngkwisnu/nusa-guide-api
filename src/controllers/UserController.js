@@ -68,7 +68,7 @@ const addUser = async (req, res) => {
     }
 
     // Tambahkan data user
-    const fotoUrl = `http://18.141.9.175:5000/api/files/${foto}`;
+    const fotoUrl = `http://54.254.36.46:5000/api/files/${foto}`;
     await userModel.addUser(body, fotoUrl);
 
     // Kirim respons berhasil
@@ -115,7 +115,7 @@ const updateUser = async (req, res) => {
     }
 
     // Lakukan pembaruan data user
-    const fotoUrl = `http://18.141.9.175:5000/api/files/${foto}`;
+    const fotoUrl = `http://54.254.36.46:5000/api/files/${foto}`;
     await userModel.updateUser(body, fotoUrl, id);
 
     // Kirim respons berhasil
@@ -165,7 +165,7 @@ const updateUserByToken = async (req, res) => {
     }
 
     // Lakukan pembaruan data user
-    const fotoUrl = `http://18.141.9.175:5000/api/files/${foto}`;
+    const fotoUrl = `http://54.254.36.46:5000/api/files/${foto}`;
     await userModel.updateUserByToken(body, fotoUrl, token);
 
     // Kirim respons berhasil

@@ -51,7 +51,6 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-
   try {
     let [user] = await userModel.getUserByUsername(username);
     if (!user) {
@@ -141,7 +140,7 @@ const verify = async (req, res) => {
     }
     // Generate OTP
     const otp = crypto.randomInt(1000, 9999).toString();
-    const link = `http://18.141.9.175:5000/auth/change-password/${dataUser.id}`;
+    const link = `http://54.254.36.46:5000/auth/change-password/${dataUser.id}`;
 
     // Simpan OTP ke dalam penyimpanan sementara
     otpStore[email] = otp;

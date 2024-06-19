@@ -173,10 +173,10 @@ const addWisata = async (req, res) => {
         message: `Wisata dengan Nama: ${body.nama} sudah ada, silahkan masukkan nama wisata yang lain!`,
       });
     }
-    const gambar1Url = `http://18.141.9.175:5000/api/files/${gambar1}`;
-    const gambar2Url = `http://18.141.9.175:5000/api/files/${gambar2}`;
-    const gambar3Url = `http://18.141.9.175:5000/api/files/${gambar3}`;
-    const gambar4Url = `http://18.141.9.175:5000/api/files/${gambar4}`;
+    const gambar1Url = `http://54.254.36.46:5000/api/files/${gambar1}`;
+    const gambar2Url = `http://54.254.36.46:5000/api/files/${gambar2}`;
+    const gambar3Url = `http://54.254.36.46:5000/api/files/${gambar3}`;
+    const gambar4Url = `http://54.254.36.46:5000/api/files/${gambar4}`;
     await wisataModel.addWisata(
       body,
       gambar1Url,
@@ -245,10 +245,10 @@ const updateWisata = async (req, res) => {
     }
 
     // Lakukan pembaruan data
-    const gambar1Url = `http://18.141.9.175:5000/api/files/${gambar1}`;
-    const gambar2Url = `http://18.141.9.175:5000/api/files/${gambar2}`;
-    const gambar3Url = `http://18.141.9.175:5000/api/files/${gambar3}`;
-    const gambar4Url = `http://18.141.9.175:5000/api/files/${gambar4}`;
+    const gambar1Url = `http://54.254.36.46:5000/api/files/${gambar1}`;
+    const gambar2Url = `http://54.254.36.46:5000/api/files/${gambar2}`;
+    const gambar3Url = `http://54.254.36.46:5000/api/files/${gambar3}`;
+    const gambar4Url = `http://54.254.36.46:5000/api/files/${gambar4}`;
     await wisataModel.updateWisata(
       body,
       gambar1Url,
