@@ -1,17 +1,40 @@
 const userModel = require("../models/UserModel");
 
 const getAllUser = async (req, res) => {
-  try {
-    const [data] = await userModel.getAllUser();
-    res.json({
-      message: "GET all user success!",
-      data: data,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Server error!",
-      serverMessage: error,
-    });
+  const token = req.headers["authorization"];
+  if (token) {
+    try {
+      const user = await userModel.getUserByToken(token);
+
+      if (user.length > 0) {
+        res.json({
+          message: `Data user Berhasil Diambil!`,
+          data: user,
+        });
+      } else {
+        res.status(404).json({
+          message: `Data user Dengan ID:${id} tidak ditemukan, tolong masukkan data dengan benar!`,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: "Server error!",
+        serverMessage: error.message || "Internal server error.",
+      });
+    }
+  } else {
+    try {
+      const [data] = await userModel.getAllUser();
+      res.json({
+        message: "GET all user success!",
+        data: data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Server error!",
+        serverMessage: error,
+      });
+    }
   }
 };
 
