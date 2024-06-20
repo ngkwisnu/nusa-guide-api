@@ -9,17 +9,17 @@ const getAllWisata = async (req, res) => {
       const wisata = await wisataModel.getWisataByKategori(kategori);
 
       if (wisata.length > 0) {
-        res.json({
+        return res.json({
           message: `Data wisata berdasarkan kategori: ${kategori} Berhasil Diambil!`,
           data: wisata,
         });
       } else {
-        res.status(404).json({
+        return res.status(404).json({
           message: `Data wisata berdasarkan kategori: ${kategori} tidak ditemukan, tolong masukkan data dengan benar!`,
         });
       }
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Server error!",
         serverMessage: error.message || "Internal server error.",
       });
@@ -29,35 +29,37 @@ const getAllWisata = async (req, res) => {
   if (rating) {
     try {
       const wisata = await wisataModel.getWisataByRating(rating);
+
       if (wisata.length > 0) {
-        res.json({
+        return res.json({
           message: `Data wisata berdasarkan rating: ${rating} Berhasil Diambil!`,
           data: wisata,
         });
       } else {
-        res.status(404).json({
+        return res.status(404).json({
           message: `Data wisata berdasarkan rating: ${rating} tidak ditemukan, tolong masukkan data dengan benar!`,
         });
       }
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Server error!",
         serverMessage: error.message || "Internal server error.",
       });
     }
-  } else {
-    try {
-      const [result] = await wisataModel.getAllWisata();
-      res.json({
-        message: "GET all wisata success!",
-        data: result,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: "Server error wkwk!",
-        serverMessage: error,
-      });
-    }
+  }
+
+  // Jika tidak ada query parameter 'kategori' atau 'rating', ambil semua data wisata
+  try {
+    const [result] = await wisataModel.getAllWisata();
+    return res.json({
+      message: "GET all wisata success!",
+      data: result,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Server error!",
+      serverMessage: error.message || "Internal server error.",
+    });
   }
 };
 
