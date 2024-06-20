@@ -40,48 +40,73 @@ const getUserById = async (req, res) => {
 };
 
 const addUser = async (req, res) => {
-  const { body } = req;
-  foto = req.files["foto"] ? req.files["foto"][0].filename : null;
-  // Periksa apakah semua properti yang diperlukan ada dalam objek body
-  if (
-    !body.email ||
-    !body.username ||
-    !body.password ||
-    !body.role ||
-    !body.nama ||
-    !body.telepon ||
-    !body.alamat ||
-    !foto
-  ) {
-    return res.status(400).json({
-      message: "Data yang dikirim tidak lengkap atau tidak sesuai format.",
-    });
-  }
+  const { body, files } = req;
+  console.log(files);
+  if (body == {} || !files) {
+    const token = req.headers["authorization"];
 
-  try {
-    // Cek apakah data dengan nama yang sama sudah ada
-    const dataAlreadyExists = await userModel.getUserByName(body.nama);
-    if (dataAlreadyExists.length > 0) {
+    try {
+      const user = await userModel.getUserByToken(token);
+
+      if (user.length > 0) {
+        res.json({
+          message: `Data user Berhasil Diambil!`,
+          data: user,
+        });
+      } else {
+        res.status(404).json({
+          message: `Data user Dengan ID:${id} tidak ditemukan, tolong masukkan data dengan benar!`,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: "Server error!",
+        serverMessage: error.message || "Internal server error.",
+      });
+    }
+  } else {
+    const foto = req.files["foto"] ? req.files["foto"][0].filename : null;
+    // Periksa apakah semua properti yang diperlukan ada dalam objek body
+    if (
+      !body.email ||
+      !body.username ||
+      !body.password ||
+      !body.role ||
+      !body.nama ||
+      !body.telepon ||
+      !body.alamat ||
+      !foto
+    ) {
       return res.status(400).json({
-        message: `User dengan Nama: ${body.nama} sudah ada, silahkan masukkan nama User yang lain!`,
+        message: "Data yang dikirim tidak lengkap atau tidak sesuai format.",
       });
     }
 
-    // Tambahkan data user
-    const fotoUrl = `http://54.254.36.46:5000/api/files/${foto}`;
-    await userModel.addUser(body, fotoUrl);
+    try {
+      // Cek apakah data dengan nama yang sama sudah ada
+      const dataAlreadyExists = await userModel.getUserByName(body.nama);
+      if (dataAlreadyExists.length > 0) {
+        return res.status(400).json({
+          message: `User dengan Nama: ${body.nama} sudah ada, silahkan masukkan nama User yang lain!`,
+        });
+      }
 
-    // Kirim respons berhasil
-    res.status(201).json({
-      message: "Tambah data User berhasil!",
-      data: body,
-    });
-  } catch (error) {
-    // Tangani kesalahan server
-    res.status(500).json({
-      message: "Server error!",
-      serverMessage: error,
-    });
+      // Tambahkan data user
+      const fotoUrl = `http://54.254.36.46:5000/api/files/${foto}`;
+      await userModel.addUser(body, fotoUrl);
+
+      // Kirim respons berhasil
+      res.status(201).json({
+        message: "Tambah data User berhasil!",
+        data: body,
+      });
+    } catch (error) {
+      // Tangani kesalahan server
+      res.status(500).json({
+        message: "Server error!",
+        serverMessage: error,
+      });
+    }
   }
 };
 
