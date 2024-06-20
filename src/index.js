@@ -1,7 +1,7 @@
 const http = require("http");
 const PORT = 5000;
-const HOST = "0.0.0.0";
-// const HOST = "localhost";
+// const HOST = "0.0.0.0";
+const HOST = "localhost";
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -63,6 +63,7 @@ const PesananRoute = require("./routes/PesananRoute");
 const UlasanRoute = require("./routes/UlasanRoute");
 const AuthRoute = require("./routes/AuthRoute");
 const FavoriteRoute = require("./routes/FavoriteRoute");
+const KeranjangRoute = require("./routes/KeranjangRoute");
 
 app.use(cors(corsOptions));
 app.use(cookieParser());
@@ -77,6 +78,12 @@ app.use(
   ]), // Middleware authentication
   authentication,
   WisataRoute // Middleware WisataRoute
+);
+
+app.use(
+  "/keranjang", // Middleware authentication
+  authentication,
+  KeranjangRoute // Middleware WisataRoute
 );
 
 app.use(
