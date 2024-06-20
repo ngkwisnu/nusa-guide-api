@@ -1,7 +1,9 @@
 const userModel = require("../models/UserModel");
 
 const getAllUser = async (req, res) => {
-  const token = req.headers["authorization"];
+  const token = req.headers["authorization"].split(" ")[1];
+  // const bearer = req.authorization["bearer-token"];
+  // console.log(bearer);
   if (token) {
     try {
       const user = await userModel.getUserByToken(token);

@@ -80,7 +80,7 @@ const login = async (req, res) => {
     jwt.sign(userData, "gahg48589a45ajfjAUFAHHFIhufuu", async (err, token) => {
       if (err) throw err;
       const bearerToken = `Bearer ${token}`;
-      await userModel.updateAccessToken(bearerToken, user.id);
+      await userModel.updateAccessToken(token, user.id);
       return res.status(200).json({
         status: true,
         message: "Login Successfully",
