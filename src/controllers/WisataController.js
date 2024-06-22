@@ -132,69 +132,70 @@ const addWisata = async (req, res) => {
         serverMessage: error.message || "Internal server error.",
       });
     }
-  }
-  const { body } = req;
-  const gambar1 = req.files["gambar1"]
-    ? req.files["gambar1"][0].filename
-    : null;
-  const gambar2 = req.files["gambar2"]
-    ? req.files["gambar2"][0].filename
-    : null;
-  const gambar3 = req.files["gambar3"]
-    ? req.files["gambar3"][0].filename
-    : null;
-  const gambar4 = req.files["gambar4"]
-    ? req.files["gambar4"][0].filename
-    : null;
-  const requiredFields = [
-    "nama",
-    "lokasi",
-    "jam_buka",
-    "jam_tutup",
-    "jarak_lokasi",
-    "harga",
-    "deskripsi",
-    "informasi_tourguide",
-    "harga_termasuk",
-    "kategori",
-    "rating",
-    "payment_link",
-  ];
-  const allFieldsPresent = requiredFields.every((field) =>
-    Object.prototype.hasOwnProperty.call(body, field)
-  );
-  if (!allFieldsPresent) {
-    return res.status(400).json({
-      message: "Data yang dikirim tidak lengkap atau tidak sesuai format.",
-    });
-  }
-  try {
-    const dataAlreadyExists = await wisataModel.getWisataByName(body.nama);
-    if (dataAlreadyExists.length > 0) {
+  } else {
+    const { body } = req;
+    const gambar1 = req.files["gambar1"]
+      ? req.files["gambar1"][0].filename
+      : null;
+    const gambar2 = req.files["gambar2"]
+      ? req.files["gambar2"][0].filename
+      : null;
+    const gambar3 = req.files["gambar3"]
+      ? req.files["gambar3"][0].filename
+      : null;
+    const gambar4 = req.files["gambar4"]
+      ? req.files["gambar4"][0].filename
+      : null;
+    const requiredFields = [
+      "nama",
+      "lokasi",
+      "jam_buka",
+      "jam_tutup",
+      "jarak_lokasi",
+      "harga",
+      "deskripsi",
+      "informasi_tourguide",
+      "harga_termasuk",
+      "kategori",
+      "rating",
+      "payment_link",
+    ];
+    const allFieldsPresent = requiredFields.every((field) =>
+      Object.prototype.hasOwnProperty.call(body, field)
+    );
+    if (!allFieldsPresent) {
       return res.status(400).json({
-        message: `Wisata dengan Nama: ${body.nama} sudah ada, silahkan masukkan nama wisata yang lain!`,
+        message: "Data yang dikirim tidak lengkap atau tidak sesuai format.",
       });
     }
-    const gambar1Url = `http://54.254.36.46:5000/api/files/${gambar1}`;
-    const gambar2Url = `http://54.254.36.46:5000/api/files/${gambar2}`;
-    const gambar3Url = `http://54.254.36.46:5000/api/files/${gambar3}`;
-    const gambar4Url = `http://54.254.36.46:5000/api/files/${gambar4}`;
-    await wisataModel.addWisata(
-      body,
-      gambar1Url,
-      gambar2Url,
-      gambar3Url,
-      gambar4Url
-    );
-    res.status(201).json({
-      message: "Tambah data wisata berhasil!",
-      data: body,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Server error!",
-      serverMessage: error,
-    });
+    try {
+      const dataAlreadyExists = await wisataModel.getWisataByName(body.nama);
+      if (dataAlreadyExists.length > 0) {
+        return res.status(400).json({
+          message: `Wisata dengan Nama: ${body.nama} sudah ada, silahkan masukkan nama wisata yang lain!`,
+        });
+      }
+      const gambar1Url = `http://54.254.36.46:5000/api/files/${gambar1}`;
+      const gambar2Url = `http://54.254.36.46:5000/api/files/${gambar2}`;
+      const gambar3Url = `http://54.254.36.46:5000/api/files/${gambar3}`;
+      const gambar4Url = `http://54.254.36.46:5000/api/files/${gambar4}`;
+      await wisataModel.addWisata(
+        body,
+        gambar1Url,
+        gambar2Url,
+        gambar3Url,
+        gambar4Url
+      );
+      res.status(201).json({
+        message: "Tambah data wisata berhasil!",
+        data: body,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Server error!",
+        serverMessage: error,
+      });
+    }
   }
 };
 

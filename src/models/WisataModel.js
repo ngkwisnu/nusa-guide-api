@@ -51,7 +51,7 @@ const addWisata = (body, gambar1Url, gambar2Url, gambar3Url, gambar4Url) => {
   // console.log(body);
   const SQLQuery = `
         INSERT INTO wisata (nama, lokasi, rating, payment_link, jam_buka, jam_tutup, jarak_lokasi, harga, deskripsi, gambar1, gambar2, gambar3, gambar4, informasi_tourguide, harga_termasuk, kategori, created_at, updated_at) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
   const values = [
     nama,
