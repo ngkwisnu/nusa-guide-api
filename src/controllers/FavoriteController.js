@@ -5,12 +5,14 @@ const UserModel = require("../models/UserModel");
 const getAllFavorite = async (req, res) => {
   try {
     const [data] = await FavoriteModel.getAllFavorite();
-    res.json({
+    res.status(200).json({
+      status: true,
       message: "GET all favorite success!",
       data: data,
     });
   } catch (error) {
     res.status(500).json({
+      status: false,
       message: "Server error!",
       serverMessage: error,
     });
@@ -30,18 +32,21 @@ const getFavoriteByIdUser = async (req, res) => {
       wisata.push(w);
     }
     if (data.length > 0) {
-      res.json({
+      res.status(200).json({
+        status: true,
         message: `Data favorite Dengan ID User:${id_user} Berhasil Diambil!`,
         user: user,
         data: wisata,
       });
     } else {
       res.status(404).json({
+        status: false,
         message: `Data favorite Dengan ID User:${id_user} tidak ditemukan, tolong masukkan data dengan benar!`,
       });
     }
   } catch (error) {
     res.status(500).json({
+      status: false,
       message: "Server error!",
       serverMessage: error.message || "Internal server error.",
     });
@@ -57,17 +62,20 @@ const addFavorite = async (req, res) => {
   );
   if (!allFieldsPresent) {
     return res.status(400).json({
+      status: false,
       message: "Data yang dikirim tidak lengkap atau tidak sesuai format.",
     });
   }
   try {
     await FavoriteModel.addFavorite(body);
     res.status(201).json({
+      status: true,
       message: "Wisata telah ditambahkan ke favorite!",
       data: { body },
     });
   } catch (error) {
     res.status(500).json({
+      status: false,
       message: "Server error!",
       serverMessage: error,
     });
@@ -85,11 +93,13 @@ const deleteFavorite = async (req, res) => {
     }
     await FavoriteModel.deleteFavorite(id);
     res.json({
+      status: true,
       message: `Deleted favorite dengan ID:${id} sukses!`,
       data: null,
     });
   } catch (error) {
     res.status(500).json({
+      status: false,
       message: "Server error!",
       serverMessage: error,
     });

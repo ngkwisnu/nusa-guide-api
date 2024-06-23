@@ -5,12 +5,14 @@ const UserModel = require("../models/UserModel");
 const getAllKeranjang = async (req, res) => {
   try {
     const [data] = await KeranjangModel.getAllKeranjang();
-    res.json({
+    res.status(200).json({
+      status: true,
       message: "GET all Keranjang success!",
       data: data,
     });
   } catch (error) {
     res.status(500).json({
+      status: false,
       message: "Server error!",
       serverMessage: error,
     });
@@ -29,18 +31,21 @@ const getKeranjangByIdUser = async (req, res) => {
         let [w] = await WisataModel.getWisataById(data[index].id_wisata);
         wisata.push(w);
       }
-      res.json({
+      res.status(200).json({
+        status: true,
         message: `Data keranjang Dengan ID User:${id} Berhasil Diambil!`,
         user: user,
         data: wisata,
       });
     } else {
       res.status(404).json({
+        status: false,
         message: `Data keranjang Dengan ID User:${id} tidak ditemukan, tolong masukkan data dengan benar!`,
       });
     }
   } catch (error) {
     res.status(500).json({
+      status: false,
       message: "Server error!",
       serverMessage: error.message || "Internal server error.",
     });
@@ -56,17 +61,20 @@ const addKeranjang = async (req, res) => {
   );
   if (!allFieldsPresent) {
     return res.status(400).json({
+      status: false,
       message: "Data yang dikirim tidak lengkap atau tidak sesuai format.",
     });
   }
   try {
     await KeranjangModel.addKeranjang(body);
     res.status(201).json({
+      status: true,
       message: "Wisata telah ditambahkan ke keranjang!",
       data: { body },
     });
   } catch (error) {
     res.status(500).json({
+      status: false,
       message: "Server error!",
       serverMessage: error,
     });
@@ -79,16 +87,19 @@ const deleteKeranjang = async (req, res) => {
     const dataAlreadyExists = await KeranjangModel.getKeranjangById(id);
     if (dataAlreadyExists.length == 0) {
       return res.status(400).json({
+        status: false,
         message: `Deleted failed! keranjang dengan ID:${id} tidak ditemukan!`,
       });
     }
     await KeranjangModel.deleteKeranjang(id);
-    res.json({
+    res.status(200).json({
+      status: true,
       message: `Deleted keranjang dengan ID:${id} sukses!`,
       data: null,
     });
   } catch (error) {
     res.status(500).json({
+      status: false,
       message: "Server error!",
       serverMessage: error,
     });
