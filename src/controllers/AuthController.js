@@ -36,12 +36,14 @@ const register = async (req, res) => {
 
     // Kirim respons berhasil
     res.status(201).json({
+      status: true,
       message: "Register berhasil!",
       data: body,
     });
   } catch (error) {
     // Tangani kesalahan server
     res.status(500).json({
+      status: false,
       message: "Server error!",
       serverMessage: error,
     });
