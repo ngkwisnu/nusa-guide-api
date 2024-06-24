@@ -210,26 +210,9 @@ const updateUser = async (req, res) => {
 };
 
 const updateUserByToken = async (req, res) => {
-  const token = req.headers["authorization"];
-  const { body } = req;
-  foto = req.files["foto"] ? req.files["foto"][0].filename : null;
-  // Periksa apakah semua properti yang diperlukan ada dalam objek body
-  //   if (
-  //     !body.email ||
-  //     !body.username ||
-  //     !body.password ||
-  //     !body.role ||
-  //     !body.nama ||
-  //     !body.telepon ||
-  //     !body.alamat ||
-  //     !foto
-  //   ) {
-  //     return res.status(400).json({
-  //       message: "Data yang dikirim tidak lengkap atau tidak sesuai format.",
-  //     });
-  //   }
-
   try {
+    const token = req.headers["authorization"];
+    const { body } = req;
     // Cek apakah data dengan nama yang sama sudah ada
     const dataAlreadyExists = await userModel.getUserByUsername(body.username);
     if (dataAlreadyExists.length > 1) {
@@ -239,8 +222,7 @@ const updateUserByToken = async (req, res) => {
     }
 
     // Lakukan pembaruan data user
-    const fotoUrl = `http://54.254.36.46:5000/api/files/${foto}`;
-    await userModel.updateUserByToken(body, fotoUrl, token);
+    await userModel.updateUserByToken(body, token);
 
     // Kirim respons berhasil
     res.status(201).json({

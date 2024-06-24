@@ -107,12 +107,11 @@ const updateUser = (body, fotoUrl, id) => {
   return dbPool.execute(SQLQuery, values);
 };
 
-const updateUserByToken = async (body, fotoUrl, token) => {
+const updateUserByToken = async (body, token) => {
   try {
-    let { email, username, password, role, nama, telepon, alamat } = body;
+    let { email, username, password, telepon } = body;
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
-    role = "user";
     password = hash;
     const currentTime = new Date();
 
@@ -128,22 +127,9 @@ const updateUserByToken = async (body, fotoUrl, token) => {
     const updated_at = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
     const SQLQuery = `
         UPDATE user 
-        SET email = ?, username = ?, password = ?, role = ?, created_at = ?, updated_at = ?, nama = ?, telepon = ?, alamat = ?, foto = ?
-        WHERE token = ?
+        SET email = ?, username = ?, password = ?, updated_at = ?, telepon = ? WHERE token = ?
     `;
-    const values = [
-      email,
-      username,
-      password,
-      role,
-      created_at,
-      updated_at,
-      nama,
-      telepon,
-      alamat,
-      fotoUrl,
-      token,
-    ];
+    const values = [email, username, password, updated_at, telepon, token];
     return dbPool.execute(SQLQuery, values);
   } catch (error) {
     console.log(error);
